@@ -1,0 +1,7 @@
+{
+    "settings": {
+        "auth": {
+            "server_uri": "https://example.com/auth"
+        }
+    }
+}

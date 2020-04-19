@@ -1,4 +1,5 @@
-function multiply(x, y) {
-    return x * y;
-} 
-export {multiply};
+import {multiply} from './lib/utils';
+
+export {
+    multiply
+}
