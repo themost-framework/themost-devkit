@@ -4,6 +4,7 @@ const dir = require('@babel/cli/lib/babel/dir').default;
 const options = require('@babel/cli/lib/babel/options').default;
 const fs = require('fs');
 /**
+ * Build @themost/cli application by using @babel/cli
  * @param {string} sourceDir 
  * @param {string} outDir 
  */
@@ -15,6 +16,7 @@ function build(sourceDir, outDir) {
     if (typeof sourceDir !== 'string') {
         throw new Error('sourceDir must be a string');
     }
+    // check if sourceDir exists
     fs.statSync(sourceDir);
     // validate outDir
     outDir = outDir || path.resolve(process.cwd(), 'dist');
@@ -23,6 +25,9 @@ function build(sourceDir, outDir) {
     }
     const finalSourceDir = path.resolve(process.cwd(), sourceDir);
     const finalOutDir = path.resolve(process.cwd(), outDir);
+    if (finalSourceDir === outDir) {
+        throw new Error('sourceDir and outDir cannot be the same');
+    }
     // get options
     const opts = options([
         '',
