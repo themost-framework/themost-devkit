@@ -1,0 +1,33 @@
+{
+  "name": "@themost-devkit/build",
+  "version": "0.1.0",
+  "description": "MOST Web Framework Bulld Module for Babel",
+  "main": "index.js",
+  "scripts": {},
+  "engines": {
+    "node": ">=8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/themost-framework/themost-devkit.git"
+  },
+  "keywords": [
+    "@themost",
+    "babel",
+    "build",
+    "tools"
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/plugin-proposal-export-default-from": "^7.8.3",
+    "@babel/plugin-proposal-export-namespace-from": "^7.8.3",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/register": "^7.0.0",
+    "rimraf": "^2.6.3"
+  },
+  "author": "",
+  "license": "BSD-3-Clause"
+}

@@ -1,0 +1,39 @@
+{
+  "name": "themost-devkit",
+  "version": "0.1.0",
+  "description": "MOST Web Framework Build Tools",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/themost-framework/themost-devkit.git"
+  },
+  "keywords": [
+    "@themost",
+    "build",
+    "tools",
+    "babel",
+    "typescript"
+  ],
+  "author": "",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/themost-framework/themost-devkit/issues"
+  },
+  "homepage": "https://github.com/themost-framework/themost-devkit#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/plugin-proposal-export-default-from": "^7.8.3",
+    "@babel/plugin-proposal-export-namespace-from": "^7.8.3",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/register": "^7.0.0",
+    "@types/jasmine": "^3.5.10",
+    "jasmine": "^3.5.0",
+    "jasmine-spec-reporter": "^5.0.1",
+    "rimraf": "^2.6.3"
+  }
+}
