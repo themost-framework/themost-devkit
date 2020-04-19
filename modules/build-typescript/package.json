@@ -1,0 +1,29 @@
+{
+  "name": "@themost-devkit/build-typescript",
+  "version": "0.1.0",
+  "description": "MOST Web Framework Bulld Module for Typescript",
+  "main": "index.js",
+  "scripts": {},
+  "engines": {
+    "node": ">=8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/themost-framework/themost-devkit.git"
+  },
+  "keywords": [
+    "@themost",
+    "babel",
+    "build",
+    "tools"
+  ],
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "typescript": "^2.9.2"
+  },
+  "author": "",
+  "license": "BSD-3-Clause"
+}
