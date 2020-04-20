@@ -1,5 +1,5 @@
 {
-  "name": "@themost-devkit/build-typescript",
+  "name": "@themost-devkit/build",
   "version": "0.1.1",
   "description": "MOST Web Framework Bulld Module for Babel",
   "main": "index.js",
