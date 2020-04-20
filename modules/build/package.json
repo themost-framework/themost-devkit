@@ -1,6 +1,6 @@
 {
   "name": "@themost-devkit/build-typescript",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MOST Web Framework Bulld Module for Babel",
   "main": "index.js",
   "scripts": {},
@@ -17,7 +17,7 @@
     "build",
     "tools"
   ],
-  "devDependencies": {
+  "dependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",

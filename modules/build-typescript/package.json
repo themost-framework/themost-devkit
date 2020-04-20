@@ -1,6 +1,6 @@
 {
   "name": "@themost-devkit/build-typescript",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MOST Web Framework Bulld Module for Typescript",
   "main": "index.js",
   "scripts": {},
@@ -17,7 +17,7 @@
     "build",
     "tools"
   ],
-  "devDependencies": {
+  "dependencies": {
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
     "gulp-sourcemaps": "^2.6.5",
