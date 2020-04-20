@@ -1,6 +1,13 @@
+
+declare interface ExtraBuildOptions {
+    configFile?: string;
+    verbose?: boolean;
+    quiet?: boolean;
+    sourceMaps?: boolean;
+}
+
 /**
  * Build @themost/cli application by using @babel/cli
- * @param {string} sourceDir 
- * @param {string} outDir 
+ * @param {string} projectDir 
  */
-export declare function build(sourceDir: string, outDir: string): Promise<void>;
+export declare function build(projectDir: string, buildOptions?: ExtraBuildOptions): Promise<void>;

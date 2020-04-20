@@ -1,6 +1,5 @@
 /**
  * Build @themost/cli application written in typescript
- * @param {string} sourceDir 
- * @param {string} outDir 
+ * @param {string} projectDir 
  */
-export declare function build(sourceDir: string, outDir: string): Promise<void>;
+export declare function build(projectDir: string): Promise<void>;

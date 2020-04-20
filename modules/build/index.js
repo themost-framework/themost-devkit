@@ -3,42 +3,88 @@ const path = require('path');
 const dir = require('@babel/cli/lib/babel/dir').default;
 const options = require('@babel/cli/lib/babel/options').default;
 const fs = require('fs');
+
+/**
+ * Gets cli configuration
+ * @param {string} projectDir
+ */
+function getCliConfiguration(projectDir) {
+    // try to get .themost-cli.json
+    let cliConfiguration;
+    try {
+         cliConfiguration = require(path.resolve(projectDir, './.themost-cli.json'));
+    }
+    catch(err) {
+        // if cli configuration cannot be found 
+        if (err.code === 'ENOENT') {
+            try {
+                // try to get themost-cli.json
+                cliConfiguration = require(path.resolve(projectDir, './themost-cli.json'));
+            }
+            catch (err) {
+                 if (err.code === 'ENOENT') {
+                     // set defaults
+                    cliConfiguration = {
+                        base: './src',
+                        out: './dist'
+                    }
+                 }
+                 else {
+                     // throw any other error while trying to load themost-cli.json
+                     throw err
+                 }
+            }
+        }
+        else {
+            // throw any other error while trying to load .themost-cli.json
+            throw err
+        }
+    }
+    return cliConfiguration;
+}
 /**
  * Build @themost/cli application by using @babel/cli
- * @param {string} sourceDir 
- * @param {string} outDir 
+ * @param {string} projectDir 
+ * @param {ExtraBuildOptions=} buildOptions 
  */
-function build(sourceDir, outDir) {
+function build(projectDir, buildOptions) {
     // validate sourceDir
-    if (sourceDir == null) {
-        throw new Error('sourceDir cannot be null');
+    if (projectDir == null) {
+        throw new Error('projectDir cannot be null');
     }
-    if (typeof sourceDir !== 'string') {
-        throw new Error('sourceDir must be a string');
+    if (typeof projectDir !== 'string') {
+        throw new Error('projectDir must be a string');
     }
     // check if sourceDir exists
-    fs.statSync(sourceDir);
-    // validate outDir
-    outDir = outDir || path.resolve(process.cwd(), 'dist');
-    if (typeof outDir !== 'string') {
-        throw new Error('outDir must be a string');
-    }
-    const finalSourceDir = path.resolve(process.cwd(), sourceDir);
-    const finalOutDir = path.resolve(process.cwd(), outDir);
-    if (finalSourceDir === outDir) {
+    fs.statSync(projectDir);
+    // get absolute path of project directory
+    const finalProjectDir = path.resolve(process.cwd(), projectDir);
+    // get configuration
+    const cliConfiguration = getCliConfiguration(finalProjectDir);
+    // get final sourceDir and outDir
+    const finalSourceDir = path.resolve(finalProjectDir, cliConfiguration.base);
+    const finalOutDir = path.resolve(finalProjectDir, cliConfiguration.out);
+    if (finalSourceDir === finalOutDir) {
         throw new Error('sourceDir and outDir cannot be the same');
     }
+    const finalBuildOptions = Object.assign({}, {
+        configFile: path.resolve(__dirname, './babel.config.js'),
+        verbose: false,
+        quiet: true,
+        sourceMaps: true
+    }, buildOptions);
     // get options
     const opts = options([
         '',
         '',
         finalSourceDir,
         '--config-file',
-        path.resolve(__dirname, './babel.config.js'),
+        finalBuildOptions.configFile,
         '--out-dir',
         finalOutDir,
         '--copy-files',
-        '--source-maps'
+        '--source-maps',
+        '--quiet'
     ]);
     // build
     return dir(opts);
