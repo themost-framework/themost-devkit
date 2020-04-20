@@ -76,7 +76,8 @@ function build(projectDir) {
         '--out-dir',
         finalOutDir,
         '--copy-files',
-        '--source-maps'
+        '--source-maps',
+        '--quiet'
     ]);
     // build
     return dir(opts);
