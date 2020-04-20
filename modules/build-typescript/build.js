@@ -4,6 +4,7 @@ const ts = require('gulp-typescript');
 const sourcemaps = require('gulp-sourcemaps');
 const clean = require('gulp-clean');
 const path = require('path');
+const fs = require('fs');
 /**
  * Get build task
  * @param {*} cliConfiguration 
@@ -13,6 +14,15 @@ const path = require('path');
 function getTask(cliConfiguration) {
 
     const tsConfigFile = path.resolve(cliConfiguration.cwd, './tsconfig.json');
+    // validate tsconfig.json
+    try {
+        fs.statSync(tsConfigFile);
+    }
+    catch (err) {
+        if (err.code === 'ENOENT') {
+            throw new Error('Project tsconfig.json cannot be found or inaccessible');
+        }
+    }
     // get ts project
     const tsProject = ts.createProject(tsConfigFile);
     // set project directory

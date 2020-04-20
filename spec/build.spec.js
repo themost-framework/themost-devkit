@@ -3,9 +3,9 @@ const path = require('path');
 const fs = require('fs');
 describe('Build', () => {
     it('should build source', async () => {
-        const sourceDir = path.resolve(__dirname, './test/src');
-        const outDir = path.resolve(__dirname, './test/dist');
-        await build(sourceDir, outDir);
+        const projectDir = path.resolve(__dirname, './test/');
+        const outDir = path.resolve(projectDir, './dist');
+        await build(projectDir);
         expect(fs.existsSync(path.resolve(outDir, 'index.js'))).toBeTrue();
         expect(fs.existsSync(path.resolve(outDir, 'lib/utils.js'))).toBeTrue();
         expect(fs.existsSync(path.resolve(outDir, 'config/app.json'))).toBeTrue();
@@ -14,9 +14,9 @@ describe('Build', () => {
         });
     });
     it('should build and use', async () => {
-        const sourceDir = path.resolve(__dirname, './test/src');
-        const outDir = path.resolve(__dirname, './test/dist');
-        await build(sourceDir, outDir);
+        const projectDir = path.resolve(__dirname, './test/');
+        const outDir = path.resolve(projectDir, './dist');
+        await build(projectDir);
         const multiply = require(outDir).multiply;
         expect(multiply).toBeInstanceOf(Function);
         expect(multiply(2,4)).toBe(8);
@@ -24,29 +24,18 @@ describe('Build', () => {
             recursive: true
         });
     });
-    it('should fail due to invalid sourceDir', async () => {
-        let sourceDir = path.resolve(__dirname, './test/src1');
-        let outDir = path.resolve(__dirname, './test/dist');
+    it('should fail due to invalid projectDir', async () => {
+        let projectDir = path.resolve(__dirname, './test1/');
         await expectAsync((async function () {
-            return await build(sourceDir, outDir)
+            return await build(projectDir)
         })()).toBeRejected();
-        sourceDir = null;
+        projectDir = null;
         await expectAsync((async function () {
-            return await build(sourceDir, outDir)
-        })()).toBeRejectedWithError('sourceDir cannot be null');
-        sourceDir = { };
+            return await build(projectDir)
+        })()).toBeRejectedWithError('projectDir cannot be null');
+        projectDir = { };
         await expectAsync((async function () {
-            return await build(sourceDir, outDir)
-        })()).toBeRejectedWithError('sourceDir must be a string');
-        sourceDir = path.resolve(__dirname, './test/src');
-        outDir = { };
-        await expectAsync((async function () {
-            return await build(sourceDir, outDir)
-        })()).toBeRejectedWithError('outDir must be a string');
-        outDir = sourceDir;
-        await expectAsync((async function () {
-            return await build(sourceDir, outDir)
-        })()).toBeRejectedWithError('sourceDir and outDir cannot be the same');
-
+            return await build(projectDir)
+        })()).toBeRejectedWithError('projectDir must be a string');
     });
 });
