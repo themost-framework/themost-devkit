@@ -45,8 +45,9 @@ function getCliConfiguration(projectDir) {
 /**
  * Build @themost/cli application by using @babel/cli
  * @param {string} projectDir 
+ * @param {ExtraBuildOptions=} buildOptions 
  */
-function build(projectDir) {
+function build(projectDir, buildOptions) {
     // validate sourceDir
     if (projectDir == null) {
         throw new Error('projectDir cannot be null');
@@ -66,13 +67,19 @@ function build(projectDir) {
     if (finalSourceDir === finalOutDir) {
         throw new Error('sourceDir and outDir cannot be the same');
     }
+    const finalBuildOptions = Object.assign({}, {
+        configFile: path.resolve(__dirname, './babel.config.js'),
+        verbose: false,
+        quiet: true,
+        sourceMaps: true
+    }, buildOptions);
     // get options
     const opts = options([
         '',
         '',
         finalSourceDir,
         '--config-file',
-        path.resolve(__dirname, './babel.config.js'),
+        finalBuildOptions.configFile,
         '--out-dir',
         finalOutDir,
         '--copy-files',
