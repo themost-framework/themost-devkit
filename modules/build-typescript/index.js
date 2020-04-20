@@ -1,41 +1,41 @@
 
-const getBuildTask = require('./gulpfile').getBuildTask;
+const getTask = require('./build').getTask;
 const fs = require('fs');
 const path = require('path');
 const tsConfig = require('./tsconfig.json');
 /**
  * Build @themost/cli application by using @babel/cli
- * @param {string} sourceDir 
+ * @param {string} projectDir 
  */
-function build(sourceDir) {
+function build(projectDir) {
     // validate sourceDir
-    if (sourceDir == null) {
-        throw new Error('sourceDir cannot be null');
+    if (projectDir == null) {
+        throw new Error('projectDir cannot be null');
     }
-    if (typeof sourceDir !== 'string') {
-        throw new Error('sourceDir must be a string');
+    if (typeof projectDir !== 'string') {
+        throw new Error('projectDir must be a string');
     }
     // check if sourceDir exists
-    fs.statSync(sourceDir);
+    fs.statSync(projectDir);
 
     // try to get .themost-cli.json
     let cliConfiguration;
     try {
-         cliConfiguration = require(path.resolve(sourceDir, './.themost-cli.json'));
+         cliConfiguration = require(path.resolve(projectDir, './.themost-cli.json'));
     }
     catch(err) {
         // if cli configuration cannot be found 
         if (err.code === 'ENOENT') {
             try {
                 // try to get themost-cli.json
-                cliConfiguration = require(path.resolve(sourceDir, './themost-cli.json'));
+                cliConfiguration = require(path.resolve(projectDir, './themost-cli.json'));
             }
             catch (err) {
                  if (err.code === 'ENOENT') {
                      // set defaults
-                     cliConfiguration = {
-                        base: path.resolve(sourceDir, './src'),
-                        out: path.resolve(sourceDir, './dist')
+                    cliConfiguration = {
+                        base: './src',
+                        out: './dist'
                     }
                  }
                  else {
@@ -52,8 +52,10 @@ function build(sourceDir) {
     if (cliConfiguration.base === cliConfiguration.out) {
         throw new Error('sourceDir and outDir cannot be the same');
     }
+    // set project root
+    cliConfiguration.cwd = path.resolve(process.cwd(), projectDir);
     // get build task
-    const runTask = getBuildTask(cliConfiguration);
+    const runTask = getTask(cliConfiguration);
     
     return new Promise((resolve, reject) => {
         return runTask( err => {

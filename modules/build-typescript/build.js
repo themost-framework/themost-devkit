@@ -10,24 +10,31 @@ const path = require('path');
  * @param {*} typescriptConfiguration 
  * @returns Function
  */
-function getBuildTask(cliConfiguration) {
+function getTask(cliConfiguration) {
 
-    const defaultConfig = path.resolve(cliConfiguration.base, './tsconfig.json');
+    const tsConfigFile = path.resolve(cliConfiguration.cwd, './tsconfig.json');
     // get ts project
-    const tsProject = ts.createProject(defaultConfig);
-    tsProject.projectDirectory = cliConfiguration.base;
+    const tsProject = ts.createProject(tsConfigFile);
+    // set project directory
+    // tsProject.projectDirectory = cliConfiguration.cwd;
+    // validate out directory 
+    if (path.isAbsolute(cliConfiguration.out)) {
+        throw 'Output directory cannot be an absolute path.';
+    }
+    // resolve outDir
+    const outDir = path.resolve(cliConfiguration.cwd, cliConfiguration.out);
+    // resolve sourceDir
+    const sourceDir = path.resolve(cliConfiguration.cwd, cliConfiguration.base);
+    // validate that output path is under process.cwd()
+    if (path.relative(cliConfiguration.cwd, outDir).startsWith('..')) {
+        throw 'Output directory must be under to process cwd.';
+    }
+    
     // clean build directory
     // read more at https://github.com/peter-vilja/gulp-clean
     gulp.task('clean', function () {
         // validate that output path is not absolute
-        // if (path.isAbsolute(cliConfiguration.out)) {
-        //     throw 'Output directory cannot be an absolute path.';
-        // }
-        // validate that output path is under process.cwd()
-        // if (path.relative(process.cwd(), cliConfiguration.out).startsWith('..')) {
-        //     throw 'Output directory must be under to process cwd.';
-        // }
-        return gulp.src(cliConfiguration.out, { 
+        return gulp.src(outDir, { 
                 read: true, 
                 allowEmpty: true
             }).pipe(clean());
@@ -36,9 +43,9 @@ function getBuildTask(cliConfiguration) {
     // read more at https://github.com/gulpjs/gulp
     gulp.task('copy-files', function () {
         return gulp.src([
-            path.join(cliConfiguration.base,'**/*'),
-            '!' + path.join(cliConfiguration.base,'**/*.ts')
-        ]).pipe(gulp.dest(cliConfiguration.out));
+            path.join(sourceDir,'**/*'),
+            '!' + path.join(sourceDir,'**/*.ts')
+        ]).pipe(gulp.dest(outDir));
     });
     // build typescript
     // read more at https://github.com/ivogabe/gulp-typescript
@@ -47,7 +54,7 @@ function getBuildTask(cliConfiguration) {
             .pipe(sourcemaps.init())
             .pipe(tsProject())
             .pipe(sourcemaps.write('.'))
-            .pipe(gulp.dest(cliConfiguration.out));
+            .pipe(gulp.dest(outDir));
     });
 
     return gulp.series('clean', 'copy-files', 'build-typescript');
@@ -55,5 +62,5 @@ function getBuildTask(cliConfiguration) {
 
 
 module.exports = {
-    getBuildTask
+    getTask: getTask
 };

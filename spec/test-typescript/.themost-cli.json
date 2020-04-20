@@ -1,4 +1,4 @@
 {
-    "base":".",
-    "out": "dist"
+    "base":"./src",
+    "out": "./dist"
 }
