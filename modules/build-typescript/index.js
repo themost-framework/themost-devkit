@@ -2,22 +2,12 @@
 const getTask = require('./build').getTask;
 const fs = require('fs');
 const path = require('path');
-const tsConfig = require('./tsconfig.json');
-/**
- * Build @themost/cli application by using @babel/cli
- * @param {string} projectDir 
- */
-function build(projectDir) {
-    // validate sourceDir
-    if (projectDir == null) {
-        throw new Error('projectDir cannot be null');
-    }
-    if (typeof projectDir !== 'string') {
-        throw new Error('projectDir must be a string');
-    }
-    // check if sourceDir exists
-    fs.statSync(projectDir);
 
+/**
+ * Gets cli configuration
+ * @param {string} projectDir
+ */
+function getCliConfiguration(projectDir) {
     // try to get .themost-cli.json
     let cliConfiguration;
     try {
@@ -49,6 +39,27 @@ function build(projectDir) {
             throw err
         }
     }
+    return cliConfiguration;
+}
+
+/**
+ * Build @themost/cli application by using @babel/cli
+ * @param {string} projectDir 
+ */
+function build(projectDir) {
+    // validate sourceDir
+    if (projectDir == null) {
+        throw new Error('projectDir cannot be null');
+    }
+    if (typeof projectDir !== 'string') {
+        throw new Error('projectDir must be a string');
+    }
+    // check if sourceDir exists
+    fs.statSync(projectDir);
+
+    // try to get .themost-cli.json
+    let cliConfiguration = getCliConfiguration(projectDir);
+    // validate base and out directories
     if (cliConfiguration.base === cliConfiguration.out) {
         throw new Error('sourceDir and outDir cannot be the same');
     }
@@ -56,7 +67,7 @@ function build(projectDir) {
     cliConfiguration.cwd = path.resolve(process.cwd(), projectDir);
     // get build task
     const runTask = getTask(cliConfiguration);
-    
+    // run task
     return new Promise((resolve, reject) => {
         return runTask( err => {
             if (err) {
