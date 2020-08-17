@@ -1,6 +1,7 @@
 const {build} = require('../modules/build');
 const path = require('path');
 const fs = require('fs');
+const rimraf = require('rimraf');
 describe('Build', () => {
     it('should build source', async () => {
         const projectDir = path.resolve(__dirname, './test/');
@@ -9,9 +10,7 @@ describe('Build', () => {
         expect(fs.existsSync(path.resolve(outDir, 'index.js'))).toBeTrue();
         expect(fs.existsSync(path.resolve(outDir, 'lib/utils.js'))).toBeTrue();
         expect(fs.existsSync(path.resolve(outDir, 'config/app.json'))).toBeTrue();
-        fs.rmdirSync(outDir, {
-            recursive: true
-        });
+        rimraf.sync(outDir);
     });
     it('should build and use', async () => {
         const projectDir = path.resolve(__dirname, './test/');
@@ -20,9 +19,7 @@ describe('Build', () => {
         const multiply = require(outDir).multiply;
         expect(multiply).toBeInstanceOf(Function);
         expect(multiply(2,4)).toBe(8);
-        fs.rmdirSync(outDir, {
-            recursive: true
-        });
+        rimraf.sync(outDir);
     });
     it('should fail due to invalid projectDir', async () => {
         let projectDir = path.resolve(__dirname, './test1/');
