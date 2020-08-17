@@ -3,6 +3,7 @@ const gulp = require('gulp');
 const ts = require('gulp-typescript');
 const sourcemaps = require('gulp-sourcemaps');
 const clean = require('gulp-clean');
+const debug = require('gulp-debug');
 const path = require('path');
 const fs = require('fs');
 /**
@@ -55,13 +56,20 @@ function getTask(cliConfiguration) {
         return gulp.src([
             path.join(sourceDir,'**/*'),
             '!' + path.join(sourceDir,'**/*.ts')
-        ]).pipe(gulp.dest(outDir));
+        ]).pipe(debug({
+                title: 'sync',
+                showCount: true
+            })).pipe(gulp.dest(outDir));
     });
     // build typescript
     // read more at https://github.com/ivogabe/gulp-typescript
     gulp.task('build-typescript', function () {
         return tsProject.src()
             .pipe(sourcemaps.init())
+            .pipe(debug({
+                title: 'build',
+                showCount: true
+            }))
             .pipe(tsProject())
             .pipe(sourcemaps.write('.'))
             .pipe(gulp.dest(outDir));

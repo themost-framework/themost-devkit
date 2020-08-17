@@ -1,17 +1,17 @@
 const {build} = require('../modules/build-typescript');
 const path = require('path');
 const fs = require('fs');
+const rimraf = require('rimraf');
 describe('Build Typescript', () => {
     it('should build source', async () => {
         const projectDir = path.resolve(__dirname, './test-typescript/');
         await build(projectDir);
         const outDir = path.resolve(projectDir, './dist');
         expect(fs.existsSync(path.resolve(outDir, 'index.js'))).toBeTrue();
+        expect(fs.existsSync(path.resolve(outDir, 'index.js.map'))).toBeTrue();
         expect(fs.existsSync(path.resolve(outDir, 'lib/utils.js'))).toBeTrue();
         expect(fs.existsSync(path.resolve(outDir, 'config/app.json'))).toBeTrue();
-        fs.rmdirSync(outDir, {
-            recursive: true
-        });
+        rimraf.sync(outDir);
     });
     it('should build and use', async () => {
         const projectDir = path.resolve(__dirname, './test-typescript/');
@@ -20,9 +20,7 @@ describe('Build Typescript', () => {
         const multiply = require(outDir).multiply;
         expect(multiply).toBeInstanceOf(Function);
         expect(multiply(2,4)).toBe(8);
-        fs.rmdirSync(outDir, {
-            recursive: true
-        });
+        rimraf.sync(outDir);
     });
     it('should fail due to invalid projectDir', async () => {
         let projectDir = path.resolve(__dirname, './test-typescript1/');
