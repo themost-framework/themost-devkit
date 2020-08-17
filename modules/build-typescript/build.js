@@ -71,7 +71,10 @@ function getTask(cliConfiguration) {
                 showCount: true
             }))
             .pipe(tsProject())
-            .pipe(sourcemaps.write('.'))
+            .pipe(sourcemaps.write('.', {
+                includeContent: true,
+                sourceRoot:  path.relative(outDir, sourceDir) 
+            }))
             .pipe(gulp.dest(outDir));
     });
 
