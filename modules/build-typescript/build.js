@@ -64,6 +64,19 @@ function getTask(cliConfiguration) {
     // build typescript
     // read more at https://github.com/ivogabe/gulp-typescript
     gulp.task('build-typescript', function () {
+        if (tsProject.config 
+            && tsProject.config.compilerOptions 
+            && tsProject.config.compilerOptions.inlineSourceMap === true) {
+            return tsProject.src()
+                .pipe(sourcemaps.init())
+                .pipe(debug({
+                    title: 'build',
+                    showCount: true
+                }))
+                .pipe(tsProject())
+                .pipe(sourcemaps.write())
+                .pipe(gulp.dest(outDir));
+        }
         return tsProject.src()
             .pipe(sourcemaps.init())
             .pipe(debug({
@@ -71,6 +84,10 @@ function getTask(cliConfiguration) {
                 showCount: true
             }))
             .pipe(tsProject())
+            .pipe(sourcemaps.mapSources(function(sourcePath, file) {
+                const sourceRoot = path.relative(outDir, sourceDir);
+                return path.relative(sourceRoot, sourcePath);
+            }))
             .pipe(sourcemaps.write('.', {
                 includeContent: true,
                 sourceRoot:  path.relative(outDir, sourceDir) 
