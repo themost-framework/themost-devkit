@@ -1,6 +1,6 @@
 {
   "name": "@themost-devkit/build",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MOST Web Framework Bulld Module for Babel",
   "main": "index.js",
   "scripts": {},
@@ -18,7 +18,7 @@
     "tools"
   ],
   "dependencies": {
-    "@babel/cli": "^7.8.4",
+    "@babel/cli": "^7.14.8",
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-decorators": "^7.8.3",
