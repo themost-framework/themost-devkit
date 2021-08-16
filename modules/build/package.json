@@ -1,7 +1,7 @@
 {
   "name": "@themost-devkit/build",
   "version": "0.1.2",
-  "description": "MOST Web Framework Bulld Module for Babel",
+  "description": "MOST Web Framework Build Module for Babel",
   "main": "index.js",
   "scripts": {},
   "engines": {
