@@ -1,7 +1,7 @@
 {
   "name": "@themost-devkit/build-typescript",
   "version": "0.1.6",
-  "description": "MOST Web Framework Bulld Module for Typescript",
+  "description": "MOST Web Framework Build Module for Typescript",
   "main": "index.js",
   "scripts": {},
   "engines": {
